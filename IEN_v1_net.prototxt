@@ -1,0 +1,337 @@
+name: "CIFARAutoencoder"
+layer {
+  name: "data"
+  type: "Data"
+  top: "data"
+  top: "label"
+  include {
+    phase: TRAIN
+  }
+  transform_param {
+    scale: 0.0039215684
+  }
+  data_param {
+    source: "train_cifar100_LR"
+    batch_size: 3000
+    backend: LMDB
+  }
+}
+layer {
+  name: "data_high"
+  type: "Data"
+  top: "data_high"
+  include {
+    phase: TRAIN
+  }
+  transform_param {
+    scale: 0.0039215684
+  }
+  data_param {
+    source: "train_cifar100_HR"
+    batch_size: 3000
+    backend: LMDB
+  }
+}
+layer {
+  name: "flatdata"
+  type: "Flatten"
+  bottom: "data"
+  top: "flatdata"
+}
+layer {
+  name: "flatdata_high"
+  type: "Flatten"
+  bottom: "data_high"
+  top: "flatdata_high"
+}
+layer {
+  name: "encode1"
+  type: "InnerProduct"
+  bottom: "flatdata"
+  top: "encode1"
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 1
+    decay_mult: 0
+  }
+  inner_product_param {
+    num_output: 1000
+    weight_filler {
+      type: "gaussian"
+      std: 1
+      sparse: 15
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
+  }
+}
+layer {
+  name: "encode1neuron"
+  type: "Sigmoid"
+  bottom: "encode1"
+  top: "encode1neuron"
+}
+layer {
+  name: "encode2"
+  type: "InnerProduct"
+  bottom: "encode1neuron"
+  top: "encode2"
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 1
+    decay_mult: 0
+  }
+  inner_product_param {
+    num_output: 500
+    weight_filler {
+      type: "gaussian"
+      std: 1
+      sparse: 15
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
+  }
+}
+layer {
+  name: "encode2neuron"
+  type: "Sigmoid"
+  bottom: "encode2"
+  top: "encode2neuron"
+}
+layer {
+  name: "encode3"
+  type: "InnerProduct"
+  bottom: "encode2neuron"
+  top: "encode3"
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 1
+    decay_mult: 0
+  }
+  inner_product_param {
+    num_output: 250
+    weight_filler {
+      type: "gaussian"
+      std: 1
+      sparse: 15
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
+  }
+}
+layer {
+  name: "encode3neuron"
+  type: "Sigmoid"
+  bottom: "encode3"
+  top: "encode3neuron"
+}
+layer {
+  name: "encode4"
+  type: "InnerProduct"
+  bottom: "encode3neuron"
+  top: "encode4"
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 1
+    decay_mult: 0
+  }
+  inner_product_param {
+    num_output: 200
+    weight_filler {
+      type: "gaussian"
+      std: 1
+      sparse: 15
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
+  }
+}
+layer {
+  name: "decode4"
+  type: "InnerProduct"
+  bottom: "encode4"
+  top: "decode4"
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 1
+    decay_mult: 0
+  }
+  inner_product_param {
+    num_output: 250
+    weight_filler {
+      type: "gaussian"
+      std: 1
+      sparse: 15
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
+  }
+}
+layer {
+  name: "decode4neuron"
+  type: "Sigmoid"
+  bottom: "decode4"
+  top: "decode4neuron"
+}
+layer {
+  name: "decode3"
+  type: "InnerProduct"
+  bottom: "decode4neuron"
+  top: "decode3"
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 1
+    decay_mult: 0
+  }
+  inner_product_param {
+    num_output: 500
+    weight_filler {
+      type: "gaussian"
+      std: 1
+      sparse: 15
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
+  }
+}
+layer {
+  name: "decode3neuron"
+  type: "Sigmoid"
+  bottom: "decode3"
+  top: "decode3neuron"
+}
+layer {
+  name: "decode2"
+  type: "InnerProduct"
+  bottom: "decode3neuron"
+  top: "decode2"
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 1
+    decay_mult: 0
+  }
+  inner_product_param {
+    num_output: 1000
+    weight_filler {
+      type: "gaussian"
+      std: 1
+      sparse: 15
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
+  }
+}
+layer {
+  name: "decode2neuron"
+  type: "Sigmoid"
+  bottom: "decode2"
+  top: "decode2neuron"
+}
+layer {
+  name: "decode1"
+  type: "InnerProduct"
+  bottom: "decode2neuron"
+  top: "decode1"
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 1
+    decay_mult: 0
+  }
+  inner_product_param {
+    num_output: 3072
+    weight_filler {
+      type: "gaussian"
+      std: 1
+      sparse: 15
+    }
+    bias_filler {
+      type: "constant"
+      value: 0
+    }
+  }
+}
+layer {
+  name: "sum"
+  type: "Eltwise"
+  bottom: "flatdata"
+  bottom: "decode1"
+  top: "sum"
+  eltwise_param {
+    operation: SUM
+  }
+}
+layer {
+  name: "loss"
+  type: "EuclideanLoss"
+  bottom: "sum"
+  bottom: "flatdata_high"
+  top: "euclidean_loss"
+  loss_weight: 0.5
+}
+layer {
+  name: "ip"
+  type: "InnerProduct"
+  bottom: "encode4"
+  top: "ip"
+  param {
+    lr_mult: 1
+  }
+  param {
+    lr_mult: 2
+  }
+  inner_product_param {
+    num_output: 100
+    weight_filler {
+      type: "xavier"
+    }
+    bias_filler {
+      type: "constant"
+    }
+  }
+}
+layer {
+  name: "loss_2"
+  type: "SoftmaxWithLoss"
+  bottom: "ip"
+  bottom: "label"
+  top: "softmaxloss"
+  loss_weight: 0.5
+}
