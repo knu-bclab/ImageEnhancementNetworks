@@ -47,16 +47,6 @@ def conv_up(in_channel, out_channel):
         nn.LeakyReLU(0.2, inplace=True)
     )
 
-def conv_imageUpSample():
-    return nn.Sequential(
-        nn.Conv2d(3,32, kernel_size=1 , padding=0),
-        nn.ReLU(),
-        nn.Conv2d(32,64, kernel_size=3 , padding=1),
-        nn.ReLU(),
-        nn.Conv2d(64,12, kernel_size=3 , padding=1),
-        nn.ReLU()
-    )
-
 class Generator(nn.Module):
     def __init__(self ,residualFactor):
         super(Generator, self).__init__()
