@@ -121,18 +121,27 @@ class Generator(nn.Module):
         out_L1_4 = self.L1_4(img_i)   # 8x8
         out_L1_2 = self.L1_2(img_i)   # 16x16
         
+        #grobalContextConcat
         out_L6d = self.L6d(torch.cat([out_L6, out_L1_32], dim=1)) # 1x1x32 -> 1x1x16
         out_L5d = self.Up65(out_L6d) # 1x1x16 -> 2x2x16
-        #out_L5d = self.Up(out_L6d) # 1x1x16 -> 2x2x16        
+        #out_L5d = self.Up(out_L6d) # 1x1x16 -> 2x2x16
+        
+        #grobalContextConcat
         out_L5d = self.L5d(torch.cat([out_L5, out_L5d, out_L1_16], dim=1)) # 2x2x48 -> 2x2x16
         out_L4d = self.Up54(out_L5d) # 2x2x16 -> 4x4x16
-        #out_L4d = self.Up(out_L5d) # 2x2x16 -> 4x4x16        
+        #out_L4d = self.Up(out_L5d) # 2x2x16 -> 4x4x16 
+        
+        #grobalContextConcat
         out_L4d = self.L4d(torch.cat([out_L4, out_L4d, out_L1_8], dim=1)) # 4x4x48 -> 4x4x16
         out_L3d = self.Up43(out_L4d) # 4x4x16 -> 8x8x16
         #out_L3d = self.Up(out_L4d) # 4x4x16 -> 8x8x16
+        
+        #grobalContextConcat
         out_L3d = self.L3d(torch.cat([out_L3, out_L3d, out_L1_4], dim=1)) # 8x8x48 -> 8x8x16
         out_L2d = self.Up32(out_L3d) # 8x8x16 -> 16x16x16
         #out_L2d = self.Up(out_L3d) # 8x8x16 -> 16x16x16
+        
+        #grobalContextConcat
         out_L2d = self.L2d(torch.cat([out_L2, out_L2d, out_L1_2], dim=1)) # 16x16x48 -> 16x16x16
         out_L1d = self.Up21(out_L2d)  # 16x16x16 -> 32x32x16
         #out_L1d = self.Up(out_L2d)  # 16x16x16 -> 32x32x16
