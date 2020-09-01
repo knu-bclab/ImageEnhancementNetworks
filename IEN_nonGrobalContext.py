@@ -109,6 +109,7 @@ class Generator(nn.Module):
         #out_L6 = self.Down56(out_L5) # ->1x1
         out_L6 = self.L6(out_L6)
         
+        #nonGrobalContext
         out_L6d = self.L6d(torch.cat([out_L6], dim=1)) # 1x1x32 -> 1x1x16
         out_L5d = self.Up65(out_L6d) # 1x1x16 -> 2x2x16
         #out_L5d = self.Up(out_L6d) # 1x1x16 -> 2x2x16        
