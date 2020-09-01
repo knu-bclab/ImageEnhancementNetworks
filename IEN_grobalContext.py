@@ -73,7 +73,8 @@ class Generator(nn.Module):
 
         self.Down = nn.MaxPool2d(2)
         self.Up = nn.Upsample(scale_factor=2, mode='bilinear', align_corners=True)
-
+        
+        #grobal context
         self.L1_32 = conv_S(3, 16, 32, 32, 0)   # 1x1
         self.L1_16 = conv_S(3, 16, 16, 16, 0)   # 2x2
         self.L1_8 = conv_S(3, 16, 8, 8, 0)      # 4x4
@@ -121,6 +122,7 @@ class Generator(nn.Module):
         out_L1_4 = self.L1_4(img_i)   # 8x8
         out_L1_2 = self.L1_2(img_i)   # 16x16
         
+        #grobalContext
         #grobalContextConcat
         out_L6d = self.L6d(torch.cat([out_L6, out_L1_32], dim=1)) # 1x1x32 -> 1x1x16
         out_L5d = self.Up65(out_L6d) # 1x1x16 -> 2x2x16
