@@ -128,4 +128,5 @@ class Generator(nn.Module):
 
         output = self.output(out_L1d) # 32x32x16 -> 32x32x3
         
+        #Residual
         return img + self.residualFactor*output
