@@ -89,7 +89,7 @@ class Generator(nn.Module):
         self.L1d = conv_B_E(48, 16, 16, 3, 1, 1) # 32x32
 
         self.output = conv_O(16, 3, 1, 1, 0)
-        #using Residual
+        #using Residual ratio
         self.residualFactor = residualFactor
 
     def forward(self, img):
