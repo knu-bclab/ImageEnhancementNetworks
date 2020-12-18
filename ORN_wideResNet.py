@@ -2,6 +2,7 @@ import torch.nn as nn
 from torchvision.models import wide_resnet101_2
 
 class Classifier(nn.Module):
+    #change paremeter for transform learning
     def __init__(self, numclasses, extractFeature):
         super(Classifier, self).__init__()
         self.model_ft = wide_resnet101_2(pretrained=False)
