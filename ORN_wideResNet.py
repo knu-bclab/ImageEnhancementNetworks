@@ -15,7 +15,9 @@ class Classifier(nn.Module):
         x = self.model_ft.bn1(x)
         x = self.model_ft.relu(x)
         x = self.model_ft.maxpool(x)
-        x_f = self.model_ft.layer1(x)        
+        x_f = self.model_ft.layer1(x)
+        
+        #extarct perceptual feature for training
         x = self.model_ft.layer2(x_f)
         x = self.model_ft.layer3(x)
         x = self.model_ft.layer4(x)
