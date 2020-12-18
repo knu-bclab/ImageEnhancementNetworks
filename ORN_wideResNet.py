@@ -17,7 +17,7 @@ class Classifier(nn.Module):
         x = self.model_ft.maxpool(x)
         x_f = self.model_ft.layer1(x)
         
-        #extarct perceptual feature for training
+        #extarct ORN perceptual feature for training
         x = self.model_ft.layer2(x_f)
         x = self.model_ft.layer3(x)
         x = self.model_ft.layer4(x)
@@ -25,6 +25,7 @@ class Classifier(nn.Module):
         x = x.view(x.size(0), -1)
         x = self.model_ft.fc(x)
         
+        #extracting ORN feature
         if self.extractFeature == True:
             return x_f, x
         elif self.extractFeature == False:
